@@ -24,6 +24,8 @@ mongoose.connect(process.env.MONGO_URI, {
 // const User = mongoose.model("User", userSchema);
 
 // Example route for user registration
+
+
 app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(
@@ -44,3 +46,5 @@ app.post("/register", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+//example code
