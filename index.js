@@ -1,46 +1,69 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const bodyParser = require("body-parser");
-const path = require("path");
-const User = require("./models/users");
-
+import express from "express";
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+import connectToDB from "./mongodb/connectToDb.js";
+
+import bodyParser from "body-parser";
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+
+import cors from "cors";
+app.use(cors());
+
+import helmet from "helmet";
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+import multer from "multer";
+import morgan from "morgan";
+app.use(morgan("common"));
+
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+
+import path from "path";
+const __dirname = path.dirname(__filename);
+app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import { register } from "./controllers/auth.js";
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
+
+app.post("/auth/register", upload.single("picture"), register);
+
+app.get("/", (req, res) => {
+  res.send({ message: "Welcome to recipy finder, by team 451" });
 });
 
-// Example User Schema
-// const userSchema = new mongoose.Schema({
-//   username: String,
-//   password: String,
-// });
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
-// const User = mongoose.model("User", userSchema);
+const PORT = process.env.PORT || 5000;
 
-// Example route for user registration
-app.post("/register", async (req, res) => {
+const startServer = async () => {
   try {
-    const hashedPassword = await bcrypt.hash(
-      req.body.password,
-      parseInt(process.env.BCRYPT_SALT_ROUNDS)
-    );
-    const newUser = new User({
-      username: req.body.username,
-      password: hashedPassword,
+    connectToDB(process.env.MONGO_URL, () => {
+      console.log("MongoDB connected!");
+      app.listen(PORT, () =>
+        console.log("Server started on port http://localhost:8080")
+      );
     });
-    await newUser.save();
-    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error);
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+};
+startServer();
