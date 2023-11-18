@@ -1,0 +1,15 @@
+/* src/components/Header.css */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align:left;
+  }
+  
+h1{
+  
+  margin:0;
+  margin-bottom: 20px;
+}
+  /* src/components/NavigationLinks.css */
+
