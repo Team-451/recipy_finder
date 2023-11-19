@@ -1,0 +1,16 @@
+/* src/components/NavigationLinks.css */
+.header-link {
+ margin-right: 30px;/* Add margin to separate the links */
+    color: white;
+    text-decoration: none; /* Remove the underline */
+    font-weight: 500;
+    padding-bottom: 30px;
+    padding-left: 50px;
+  }
+  
+  .header-links-container {
+    display: flex;
+    justify-content: flex-end; /* Push the links to the right */
+  }
+
+  
