@@ -16,19 +16,20 @@ app.listen(PORT, () => {
   console.log(`Server is listening on port 4000`);
 });
 
-app.use(
-  cors({
-    origin: [
-      "*",
-      "https://recipy-finder.vercel.app/",
-      "https://recipy-finder.vercel.app",
-      "https://76.76.21.123:443",
-      "https://76.76.21.123:443/",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "*",
+//       "https://recipy-finder.vercel.app/",
+//       "https://recipy-finder.vercel.app",
+//       "https://76.76.21.123:443",
+//       "https://76.76.21.123:443/",
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 app.use(cookieParser());
 
 app.use(express.json());
