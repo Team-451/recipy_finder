@@ -18,7 +18,7 @@ app.listen(PORT, () => {
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://recipy-finder.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
