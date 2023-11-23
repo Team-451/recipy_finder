@@ -31,7 +31,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "recipyfinder-production.up.railway.app/login",
+        "http://localhost:4000/login",
         {
           ...inputValue,
         },

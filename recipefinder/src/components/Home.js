@@ -1,3 +1,4 @@
+// src/components/HomeLink.js
 import React from 'react';
 
 function HomeLink() {

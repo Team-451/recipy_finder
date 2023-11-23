@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const authRoute = require("./routes/AuthRoute");
+const authRoute = require("./Routes/AuthRoute");
 const { MONGODB_URL, PORT } = process.env;
 
 mongoose
@@ -12,24 +12,17 @@ mongoose
   .then(() => console.log("MongoDB is  connected successfully"))
   .catch((err) => console.error(err));
 
-app.listen(PORT, () => {
+app.listen(4000, () => {
   console.log(`Server is listening on port 4000`);
 });
 
-// app.use(
-//   cors({
-//     origin: [
-//       "*",
-//       "https://recipy-finder.vercel.app/",
-//       "https://recipy-finder.vercel.app",
-//       "https://76.76.21.123:443",
-//       "https://76.76.21.123:443/",
-//     ],
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     credentials: true,
-//   })
-// );
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(express.json());
