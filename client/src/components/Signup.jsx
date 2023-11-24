@@ -32,7 +32,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/signup",
+        "http://recipyfinder-production.up.railway.app/signup",
         {
           ...inputValue,
         },
